@@ -11,7 +11,7 @@ var options struct {
 	Get struct {
 		File string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
 		Key  string `short:"k" long:"key" description:"Key" required:"true"`
-	} `command:"get" description:"Reads property value by passed 'key' from specified file and prints it. If propety is not found then empty string is printed"`
+	} `command:"get" description:"Reads property value by passed 'key' from specified file and prints it. If property is not found then empty string is printed"`
 
 	Put struct {
 		// 	File string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
