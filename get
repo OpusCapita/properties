@@ -3,7 +3,6 @@ set -e
 
 TAR_FILE="/tmp/properties.tar.gz"
 RELEASES_URL="https://github.com/OpusCapita/properties/releases"
-test -z "$TMPDIR" && TMPDIR="$(mktemp -d)"
 
 last_version() {
   curl -sL -o /dev/null -w %{url_effective} "$RELEASES_URL/latest" |
@@ -24,5 +23,11 @@ download() {
 }
 
 download
-tar -xf "$TAR_FILE" -C "$TMPDIR"
-"${TMPDIR}/properties" "$@"
+test -z "$TARGET_DIR" && TARGET_DIR="$(mktemp -d)"
+tar -xf "$TAR_FILE" -C "$TARGET_DIR"
+if [ -n "$*" ]
+then
+  "${TARGET_DIR}/properties" "$@"
+else
+  echo "File 'properties' is installed/extracted into '$TARGET_DIR' folder"
+fi
