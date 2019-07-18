@@ -21,9 +21,10 @@ jobs:
       - run:
           command: |
             if [ ! -z "${CIRCLE_TAG}" ]; then
-              GITHUB_TOKEN=${GH_TOKEN} curl -sL https://git.io/goreleaser | bash
+              GITHUB_TOKEN=${GH_TOKEN}
+              curl -sL https://git.io/goreleaser | bash
             else
-              echo "Release is skipped as there is no tag on current commit"
+              echo "Release is skipped as there is no tag on current changest"
             fi
 
 workflows:
