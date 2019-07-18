@@ -26,6 +26,7 @@ jobs:
           paths:
             - "/go/pkg"
       - run:
+          name: release (if necessary)
           command: |
             if [ ! -z "${CIRCLE_TAG}" ]; then
               GITHUB_TOKEN=${GH_TOKEN}
