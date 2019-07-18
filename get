@@ -28,7 +28,7 @@ test -z "$PROPERTIES_TARGET_DIR" && PROPERTIES_TARGET_DIR="$(mktemp -d)"
 tar -xf "$TAR_FILE" -C "$PROPERTIES_TARGET_DIR" properties
 if [ -n "$*" ]
 then
-  "${TARGET_DIR}/properties" "$@"
+  "${PROPERTIES_TARGET_DIR}/properties" "$@"
 else
   echo "File 'properties' is installed/extracted into '$PROPERTIES_TARGET_DIR' folder"
 fi
