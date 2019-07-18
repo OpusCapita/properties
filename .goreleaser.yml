@@ -3,6 +3,9 @@ builds:
     - linux
     - darwin
     - windows
+  goarch:
+    - "386"
+    - "amd64"
   env:
   - CGO_ENABLED=0
 checksum:

@@ -1,0 +1,46 @@
+version: 2
+
+jobs:
+  init:
+    docker:
+      - image: opuscapita/minsk-core-machineuser-env:1
+    steps:
+      - run:
+          name: Inject secrets from vault to CircleCI project's environment
+          command: circle_ci_add_env.sh GH_TOKEN #s GH_TOKEN is required for posting release on GitHub
+  build:
+    docker:
+      - image: circleci/golang:1.12
+    steps:
+      - checkout
+      - run:
+          name: get and test
+          command: |
+            go get
+            go test ./...
+      - run:
+          command: |
+            if [ ! -z "${CIRCLE_TAG}" ]; then
+              GITHUB_TOKEN=${GH_TOKEN} curl -sL https://git.io/goreleaser | bash
+            else
+              echo "Release is skipped as there is no tag on current commit"
+            fi
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - init:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+      - build:
+          requires:
+            - init
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
