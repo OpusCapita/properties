@@ -24,7 +24,8 @@ download() {
 
 download
 test -z "$TARGET_DIR" && TARGET_DIR="$(mktemp -d)"
-tar -xf "$TAR_FILE" -C "$TARGET_DIR"
+# extracting only 'properties' file
+tar -xf "$TAR_FILE" -C "$TARGET_DIR" properties
 if [ -n "$*" ]
 then
   "${TARGET_DIR}/properties" "$@"
