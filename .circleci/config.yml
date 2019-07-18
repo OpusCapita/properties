@@ -29,7 +29,7 @@ jobs:
           name: release (if necessary)
           command: |
             if [ ! -z "${CIRCLE_TAG}" ]; then
-              export=$GH_TOKEN
+              export GITHUB_TOKEN=$GH_TOKEN
               curl -sL https://git.io/goreleaser | bash
             else
               echo "Release is skipped as there is no tag on current changest"
