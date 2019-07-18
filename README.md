@@ -1,10 +1,13 @@
 # properties
 Command-line utility to work with '\*.properties' file
 
+# Download
 
-# Download binary
+Select released version that you are interested in on https://github.com/OpusCapita/properties/releases page and download archive with binary file for your platform.
 
-Get the latest properties binary
+# Use binary without installation
+
+Use the latest properties binary
 ```sh
 curl -sL https://git.io/oc-properties| bash
 ```
