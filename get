@@ -12,23 +12,23 @@ last_version() {
 }
 
 download() {
-  test -z "$VERSION" && VERSION="$(last_version)"
-  test -z "$VERSION" && {
+  test -z "$PROPERTIES_VERSION" && PROPERTIES_VERSION="$(last_version)"
+  test -z "$PROPERTIES_VERSION" && {
     echo "Unable to get properties version." >&2
     exit 1
   }
   rm -f "$TAR_FILE"
   curl -s -L -o "$TAR_FILE" \
-    "$RELEASES_URL/download/$VERSION/properties_$(uname -s)_$(uname -m).tar.gz"
+    "$RELEASES_URL/download/$PROPERTIES_VERSION/properties_$(uname -s)_$(uname -m).tar.gz"
 }
 
 download
-test -z "$TARGET_DIR" && TARGET_DIR="$(mktemp -d)"
+test -z "$PROPERTIES_TARGET_DIR" && PROPERTIES_TARGET_DIR="$(mktemp -d)"
 # extracting only 'properties' file
-tar -xf "$TAR_FILE" -C "$TARGET_DIR" properties
+tar -xf "$TAR_FILE" -C "$PROPERTIES_TARGET_DIR" properties
 if [ -n "$*" ]
 then
   "${TARGET_DIR}/properties" "$@"
 else
-  echo "File 'properties' is installed/extracted into '$TARGET_DIR' folder"
+  echo "File 'properties' is installed/extracted into '$PROPERTIES_TARGET_DIR' folder"
 fi

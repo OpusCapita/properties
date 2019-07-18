@@ -15,7 +15,7 @@ curl -sL https://git.io/oc-properties| bash -s -- get --file ./test.properties -
 Or, if you want to use an specific version
 
 ```sh
-curl -sL https://git.io/oc-properties | VERSION=v1.0.0-rc5 bash -s -- get --file ./test.properties --key a.b.c
+curl -sL https://git.io/oc-properties | PROPERTIES_VERSION=v1.0.0-rc5 bash -s -- get --file ./test.properties --key a.b.c
 ```
 
 In both cases you should get property value printed into stdout by key 'a.b.c' from file './test.properties'
@@ -25,8 +25,8 @@ In both cases you should get property value printed into stdout by key 'a.b.c' f
 In fact the same as running script but without passing any arguments to bash
 
 ```sh
-curl -sL https://git.io/oc-properties | TARGET_DIR=/one/two/tree bash
+curl -sL https://git.io/oc-properties | PROPERTIES_TARGET_DIR=/one/two/tree bash
 ```
 
 You'll get 'properties' binary file installed into /one/two/tree folder (corresponding message will be printed to stdout)
-**P.S.** If you don't define TARGET_DIR then installation will be performed into random temporary folder (which is not what you want)
+**P.S.** If you don't define PROPERTIES_TARGET_DIR then installation will be performed into random temporary folder (which is not what you want)
