@@ -1,0 +1,17 @@
+builds:
+- goos:
+    - linux
+    - darwin
+    - windows
+  env:
+  - CGO_ENABLED=0
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
