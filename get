@@ -2,7 +2,7 @@
 set -e
 
 TAR_FILE="/tmp/properties.tar.gz"
-RELEASES_URL="https://raw.githubusercontent.com/OpusCapita/properties/releases"
+RELEASES_URL="https://github.com/OpusCapita/properties/releases"
 test -z "$TMPDIR" && TMPDIR="$(mktemp -d)"
 
 last_version() {
