@@ -13,11 +13,18 @@ jobs:
       - image: circleci/golang:1.12
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-cache
       - run:
           name: get and test
           command: |
             go get
             go test ./...
+      - save_cache:
+          key: v1-cache
+          paths:
+            - "/go/pkg"
       - run:
           command: |
             if [ ! -z "${CIRCLE_TAG}" ]; then
