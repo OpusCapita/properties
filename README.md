@@ -30,3 +30,11 @@ curl -sL https://git.io/oc-properties | PROPERTIES_TARGET_DIR=/one/two/tree bash
 
 You'll get 'properties' binary file installed into /one/two/tree folder (corresponding message will be printed to stdout)
 **P.S.** If you don't define PROPERTIES_TARGET_DIR then installation will be performed into random temporary folder (which is not what you want)
+
+# Development
+
+## How to release
+- commit changes locally
+- look at `git tag` for the latest one; use incremented value in the next step
+- `git tag v1.0.0-rc9` (whatever the next tag after the existing latest one)
+- `git push --tags`
