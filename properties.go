@@ -15,6 +15,11 @@ var options struct {
 		Key  string `short:"k" long:"key" description:"Key" required:"true"`
 	} `command:"get" description:"Reads property value by passed 'key' from specified file and prints it. If property is not found then empty string is printed"`
 
+	Has struct {
+		File string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
+		Key  string `short:"k" long:"key" description:"Key" required:"true"`
+	} `command:"has" description:"Check if 'key' exists in specified file. If key exists the 'true' is printed, otherise 'false' is printed"`
+
 	Put struct {
 		File  string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
 		Key   string `short:"k" long:"key" description:"Key" required:"true"`
@@ -44,6 +49,10 @@ func main() {
 		p := properties.MustLoadFile(options.Get.File, properties.UTF8)
 		value := p.GetString(options.Get.Key, "")
 		fmt.Println(value)
+	case "has":
+		p := properties.MustLoadFile(options.Has.File, properties.UTF8)
+		_, ok := p.Get(options.Has.Key)
+		fmt.Println(ok)
 	case "put":
 		p := properties.MustLoadFile(options.Put.File, properties.UTF8)
 		if _, _, err := p.Set(options.Put.Key, options.Put.Value); err != nil {
