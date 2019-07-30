@@ -37,4 +37,4 @@ You'll get 'properties' binary file installed into /one/two/tree folder (corresp
 - commit changes locally
 - look at `git tag` for the latest one; use incremented value in the next step
 - `git tag v1.0.0-rc9` (whatever the next tag after the existing latest one)
-- `git push --tags`
+- `git push && git push --tags`
