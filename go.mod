@@ -1,4 +1,4 @@
-module github.com/OpusCapita/go-properties
+module github.com/OpusCapita/properties
 
 go 1.12
 

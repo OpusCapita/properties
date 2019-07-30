@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	flags "github.com/jessevdk/go-flags"
 	"github.com/magiconair/properties"
-	"os"
 )
 
 var options struct {
@@ -14,10 +15,10 @@ var options struct {
 	} `command:"get" description:"Reads property value by passed 'key' from specified file and prints it. If property is not found then empty string is printed"`
 
 	Put struct {
-		// 	File string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
-		// 	Key string `short:"k" long:"key" description:"Key" required:"true"`
-		// 	Value string `short:"v" long:"value" description:"Value"`
-	} `command:"put" description:"Not implemented yet (UNDER CONSTRUCTION)"`
+		File  string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
+		Key   string `short:"k" long:"key" description:"Key" required:"true"`
+		Value string `short:"v" long:"value" description:"Value" required:"true"`
+	} `command:"put" description:"Sets property 'key' to equal 'value' in specified file"`
 }
 
 func main() {
@@ -36,14 +37,30 @@ func main() {
 	}
 
 	commandName := parser.Command.Active.Name
-	if commandName == "get" {
+
+	switch commandName {
+	case "get":
 		p := properties.MustLoadFile(options.Get.File, properties.UTF8)
 		value := p.GetString(options.Get.Key, "")
-
 		fmt.Println(value)
-	} else {
+	case "put":
+		p := properties.MustLoadFile(options.Put.File, properties.UTF8)
+		if _, _, err := p.Set(options.Put.Key, options.Put.Value); err != nil {
+			panic(err)
+		}
+		f, err := os.OpenFile(options.Put.File, os.O_WRONLY, 0644)
+		if err != nil {
+			panic(err)
+		}
+		if _, err = p.Write(f, properties.UTF8); err != nil {
+			panic(err)
+		}
+		if err = f.Close(); err != nil {
+			panic(err)
+		}
+	default:
 		err := fmt.Errorf("command '%s' is not implemented yet", commandName)
-		fmt.Println(err.Error())
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
