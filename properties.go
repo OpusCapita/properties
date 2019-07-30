@@ -1,3 +1,4 @@
+// Command-line utility to work with '\*.properties' file
 package main
 
 import (
