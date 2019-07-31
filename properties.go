@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	flags "github.com/jessevdk/go-flags"
@@ -25,6 +26,11 @@ var options struct {
 		Key   string `short:"k" long:"key" description:"Key" required:"true"`
 		Value string `short:"v" long:"value" description:"Value" required:"true"`
 	} `command:"put" description:"Sets property 'key' to equal 'value' in specified file"`
+
+	Delete struct {
+		File string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
+		Key  string `short:"k" long:"key" description:"Key" required:"true"`
+	} `command:"del" description:"Delete 'key' in specified file"`
 }
 
 func main() {
@@ -58,19 +64,17 @@ func main() {
 		if _, _, err := p.Set(options.Put.Key, options.Put.Value); err != nil {
 			panic(err)
 		}
-		f, err := os.OpenFile(options.Put.File, os.O_WRONLY, 0644)
-		if err != nil {
+		if err := ioutil.WriteFile(options.Put.File, []byte(p.String()), 644); err != nil {
 			panic(err)
 		}
-		if _, err = p.Write(f, properties.UTF8); err != nil {
-			panic(err)
-		}
-		if err = f.Close(); err != nil {
+	case "del":
+		p := properties.MustLoadFile(options.Delete.File, properties.UTF8)
+		p.Delete(options.Delete.Key)
+		if err := ioutil.WriteFile(options.Delete.File, []byte(p.String()), 644); err != nil {
 			panic(err)
 		}
 	default:
-		err := fmt.Errorf("command '%s' is not implemented yet", commandName)
-		fmt.Println(err)
+		fmt.Println(fmt.Errorf("command '%s' is not implemented yet", commandName))
 		os.Exit(1)
 	}
 }
