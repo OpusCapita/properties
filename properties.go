@@ -22,9 +22,10 @@ var options struct {
 	} `command:"has" description:"Check if 'key' exists in specified file. If key exists the 'true' is printed, otherise 'false' is printed"`
 
 	Put struct {
-		File  string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
-		Key   string `short:"k" long:"key" description:"Key" required:"true"`
-		Value string `short:"v" long:"value" description:"Value" required:"true"`
+		File            string `short:"f" long:"file" description:"Path to properties file" value-name:"FILE" required:"true"`
+		Key             string `short:"k" long:"key" description:"Key" required:"true"`
+		Value           string `short:"v" long:"value" description:"Value" required:"true"`
+		OnlyIfKeyExists bool   `long:"only-if-key-exists" description:"Don't create new keys"`
 	} `command:"put" description:"Sets property 'key' to equal 'value' in specified file"`
 
 	Delete struct {
@@ -61,6 +62,11 @@ func main() {
 		fmt.Println(ok)
 	case "put":
 		p := properties.MustLoadFile(options.Put.File, properties.UTF8)
+		fmt.Println(options.Put)
+		if _, ok := p.Get(options.Put.Key); options.Put.OnlyIfKeyExists && !ok {
+			fmt.Println("wtf", options.Put.OnlyIfKeyExists, ok)
+			return
+		}
 		if _, _, err := p.Set(options.Put.Key, options.Put.Value); err != nil {
 			panic(err)
 		}
