@@ -62,9 +62,7 @@ func main() {
 		fmt.Println(ok)
 	case "put":
 		p := properties.MustLoadFile(options.Put.File, properties.UTF8)
-		fmt.Println(options.Put)
 		if _, ok := p.Get(options.Put.Key); options.Put.OnlyIfKeyExists && !ok {
-			fmt.Println("wtf", options.Put.OnlyIfKeyExists, ok)
 			return
 		}
 		if _, _, err := p.Set(options.Put.Key, options.Put.Value); err != nil {
