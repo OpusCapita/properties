@@ -9,7 +9,7 @@ Select released version that you are interested in on https://github.com/OpusCap
 
 Run the latest properties binary
 ```sh
-curl -sL https://git.io/oc-properties| bash -s -- get --file ./test.properties --key a.b.c
+curl -sL https://git.io/oc-properties | bash -s -- get --file ./test.properties --key a.b.c
 ```
 
 Or, if you want to use an specific version
