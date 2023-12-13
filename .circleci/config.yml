@@ -1,13 +1,28 @@
 version: 2
 
+aliases:
+  - &docker_auth
+    auth:
+      username: ${DOCKER_USER}
+      password: ${DOCKER_PASS}
+  - &default-context
+    context:
+      - shared-creds
+      
 jobs:
   init:
     docker:
-      - image: opuscapita/minsk-core-machineuser-env:1
+      - image: opuscapita/minsk-core-machineuser-env:2
+        <<: *docker_auth
     steps:
       - run:
           name: Inject secrets from vault to CircleCI project's environment
-          command: circle_ci_add_env.sh GH_TOKEN #s GH_TOKEN is required for posting release on GitHub
+          command: generate_bash_env_exports.sh GH_TOKEN > ~/generated_bash_env #s GH_TOKEN is required for posting release on GitHub
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - generated_bash_env
+            
   build:
     docker:
       - image: circleci/golang:1.12
@@ -40,12 +55,14 @@ workflows:
   commit:
     jobs:
       - init:
+          <<: *default-context
           filters:
             tags:
               only: /.*/
             branches:
               only: /.*/
       - build:
+          <<: *default-context
           requires:
             - init
           filters:
