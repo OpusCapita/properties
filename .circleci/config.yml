@@ -27,6 +27,10 @@ jobs:
     docker:
       - image: circleci/golang:1.12
     steps:
+      - attach_workspace:
+          at: /workspace
+      - run: cat /workspace/generated_bash_env >> $BASH_ENV
+      
       - checkout
       - restore_cache:
           keys:
